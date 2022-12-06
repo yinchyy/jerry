@@ -5,37 +5,7 @@ import {
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { useQuery, gql } from "@apollo/client";
-
-const GET_CHARACTERS = gql`
-  query getCharacters {
-    characters {
-      results {
-        name
-        image
-        species
-        origin {
-          name
-        }
-        gender
-        status
-      }
-    }
-  }
-`;
-interface Character {
-  name: string;
-  image: string;
-  species: string;
-  origin: string;
-  gender: string;
-  status: string;
-}
-interface CharacterResult {
-  characters: {
-    results: Character[];
-  };
-}
+import { Character } from "../../types";
 
 const columnHelper = createColumnHelper<any>();
 
@@ -56,7 +26,8 @@ const columns = [
   }),
   columnHelper.accessor("origin", {
     header: () => "Origin",
-    cell: (info) => info.getValue().name,
+    cell: (info) =>
+      info.getValue().name ? info.getValue().name : info.getValue(),
   }),
   columnHelper.accessor("gender", {
     header: "Gender",
@@ -65,15 +36,18 @@ const columns = [
     header: "Status",
   }),
 ];
-export const Table = () => {
-  const { data, loading } = useQuery<CharacterResult>(GET_CHARACTERS, {});
-
+export const Table = ({
+  data,
+  loading,
+}: {
+  data: Character[] | undefined;
+  loading: boolean;
+}) => {
   const table = useReactTable({
-    data: data ? data.characters.results : [],
+    data: data ? data : [],
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
-  console.log(data);
   if (loading) {
     return <div>data loading...</div>;
   }
