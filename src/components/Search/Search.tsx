@@ -2,7 +2,9 @@ import React from "react";
 import cx from "classnames";
 import { ReactComponent as SearchIcon } from "./search.svg";
 
-export const Search = () => {
+type SearchProps = React.InputHTMLAttributes<HTMLInputElement>;
+
+export const Search = ({ ...props }: SearchProps) => {
   return (
     <div
       className={cx(
@@ -22,6 +24,7 @@ export const Search = () => {
       <input
         className={cx("bg-white", "w-full", "focus:outline-none")}
         placeholder="Search"
+        {...props}
       />
       <SearchIcon />
     </div>
