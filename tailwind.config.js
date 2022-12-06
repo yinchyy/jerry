@@ -3,7 +3,14 @@ module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {},
+    container: {
+      center: true,
+    },
+    borderRadius: {
+      default: "5px",
+    },
     colors: {
+      white: "#FFFFFF",
       red: "#FF2626",
       blue: {
         100: "#0088DA",
