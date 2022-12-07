@@ -11,3 +11,11 @@ export interface CharacterResult {
     results: Character[];
   };
 }
+export interface SpeciesResult {
+  characters: {
+    info: {
+      next: number | null;
+    };
+    results: Array<{ species: string }>;
+  };
+}
