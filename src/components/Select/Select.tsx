@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import cx from "classnames";
 import { gql, useApolloClient } from "@apollo/client";
+import { SpeciesResult } from "../../types";
 
 type SelectProps = {
   options: string[];
@@ -24,20 +25,16 @@ export const Select = ({ options, ...props }: SelectProps) => {
   const [data, setData] = useState<string[]>(() => []);
   const [loading, setLoading] = useState(true);
   const fetchAll = async () => {
-    let allResults: any[] = [];
+    const allResults: string[] = [];
     for (let i = 1; i < 6; i++) {
-      const { data } = await client.query({
+      const { data } = await client.query<SpeciesResult>({
         query: GET_SPECIES,
         variables: { page: i },
       });
-      //here allRequests contains arrays with object {species:string}
-      allResults = [...allResults, data.characters.results];
+      allResults.push(...data.characters.results.map((value) => value.species));
     }
     setLoading(false);
-    // flattening data structure, and then using map to "unzip" string from an object
-    setData(
-      Array.from(new Set(allResults.flat().map((value) => value.species)))
-    );
+    setData(Array.from(new Set(allResults)));
   };
   return (
     <div
@@ -63,7 +60,7 @@ export const Select = ({ options, ...props }: SelectProps) => {
         placeholder="Search"
         onChange={() => setSelected(true)}
         onFocus={async () => {
-          if (data.length === 0 && !selected) {
+          if (data.length === 0 && !selected && !loading) {
             fetchAll();
           }
         }}
