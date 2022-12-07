@@ -25,16 +25,26 @@ export const Select = ({ options, ...props }: SelectProps) => {
   const [data, setData] = useState<string[]>(() => []);
   const [loading, setLoading] = useState(true);
   const fetchAll = async () => {
-    const allResults: string[] = [];
-    for (let i = 1; i < 6; i++) {
-      const { data } = await client.query<SpeciesResult>({
-        query: GET_SPECIES,
-        variables: { page: i },
-      });
-      allResults.push(...data.characters.results.map((value) => value.species));
+    let nextPage: number | null = 1;
+    while (nextPage) {
+      const { data }: { data: SpeciesResult } =
+        await client.query<SpeciesResult>({
+          query: GET_SPECIES,
+          variables: { page: nextPage },
+        });
+      nextPage = data.characters.info.next;
+      setData((prevState) =>
+        Array.from(
+          new Set([
+            ...prevState,
+            ...data.characters.results.map(
+              (value: { species: string }) => value.species
+            ),
+          ])
+        )
+      );
     }
     setLoading(false);
-    setData(Array.from(new Set(allResults)));
   };
   return (
     <div
@@ -60,18 +70,26 @@ export const Select = ({ options, ...props }: SelectProps) => {
         placeholder="Search"
         onChange={() => setSelected(true)}
         onFocus={async () => {
-          if (data.length === 0 && !selected && !loading) {
+          console.log(
+            `length: ${
+              data.length
+            }, !selected?:${!selected}, !loading?:${!loading}`
+          );
+          if (data.length === 0 && !selected) {
             fetchAll();
           }
         }}
+        defaultValue={-1}
         {...props}
       >
-        <option disabled selected hidden>
+        <option disabled value={-1} hidden>
           Select
         </option>
-        {loading ? <option>Loading...</option> : null}
+        {loading ? <option disabled>Loading...</option> : null}
         {data!.map((value, index) => (
-          <option key={index}>{value}</option>
+          <option value={value} key={index}>
+            {value}
+          </option>
         ))}
       </select>
     </div>
