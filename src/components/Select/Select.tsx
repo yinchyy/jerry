@@ -3,9 +3,7 @@ import cx from "classnames";
 import { gql, useApolloClient } from "@apollo/client";
 import { SpeciesResult } from "../../types";
 
-type SelectProps = {
-  options: string[];
-} & React.InputHTMLAttributes<HTMLSelectElement>;
+type SelectProps = {} & React.InputHTMLAttributes<HTMLSelectElement>;
 
 const GET_SPECIES = gql`
   query getSpecies($page: Int) {
@@ -19,7 +17,7 @@ const GET_SPECIES = gql`
     }
   }
 `;
-export const Select = ({ options, ...props }: SelectProps) => {
+export const Select = ({ ...props }: SelectProps) => {
   const [selected, setSelected] = useState(() => false);
   const client = useApolloClient();
   const [data, setData] = useState<string[]>(() => []);
@@ -70,11 +68,6 @@ export const Select = ({ options, ...props }: SelectProps) => {
         placeholder="Search"
         onChange={() => setSelected(true)}
         onFocus={async () => {
-          console.log(
-            `length: ${
-              data.length
-            }, !selected?:${!selected}, !loading?:${!loading}`
-          );
           if (data.length === 0 && !selected) {
             fetchAll();
           }
