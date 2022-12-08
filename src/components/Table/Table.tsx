@@ -12,9 +12,14 @@ import { Character } from "../../types";
 const columnHelper = createColumnHelper<any>();
 
 const columns = [
-  columnHelper.accessor("name", {
+  columnHelper.accessor("combined", {
     header: () => "Name",
-    cell: (info) => info.getValue(),
+    cell: (info) => (
+      <>
+        <p>{info.getValue().name}</p>
+        <p className="text-anthracite-80">{info.getValue().species}</p>
+      </>
+    ),
   }),
   columnHelper.accessor("image", {
     header: () => "Avatar",
@@ -50,7 +55,14 @@ export const Table = ({
   setCurrent: React.Dispatch<SetStateAction<number>>;
 }) => {
   const table = useReactTable({
-    data: data ? data : [],
+    data: data
+      ? data.map((value) => {
+          return {
+            ...value,
+            combined: { name: value.name, species: value.species },
+          };
+        })
+      : [],
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
