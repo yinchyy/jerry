@@ -27,15 +27,15 @@ const GET_CHARACTERS = gql`
 function App() {
   const [filterValue, setFilterValue] = useState<string>(() => "");
   const [currentPage, setCurrentPage] = useState<number>(() => 1);
+  const [search, setSearch] = useState<string>(() => "");
   const { data, loading } = useQuery<CharacterResult>(GET_CHARACTERS, {
     variables: {
       page: Math.ceil(currentPage / 4),
-      filter: { species: filterValue },
+      filter: { species: filterValue, name: search },
     },
     notifyOnNetworkStatusChange: true,
   });
   let startIndex = (5 * (currentPage - 1)) % 20;
-  const [search, setSearch] = useState<string>(() => "");
   return (
     <div className="flex min-h-screen min-w-full bg-blue-0">
       <div className="container px-6">
