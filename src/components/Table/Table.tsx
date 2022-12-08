@@ -8,6 +8,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { Character } from "../../types";
+import { Dead, Alive, Unknown } from "./icons";
 
 const columnHelper = createColumnHelper<any>();
 
@@ -41,6 +42,32 @@ const columns = [
   }),
   columnHelper.accessor("status", {
     header: "Status",
+    cell: (info) => {
+      if (info.getValue() === "Dead") {
+        return (
+          <div className="flex flex-row content-center items-center">
+            <Dead className="mr-1" />
+            Dead
+          </div>
+        );
+      }
+      if (info.getValue() === "Alive") {
+        return (
+          <div className="flex flex-row content-center items-center">
+            <Alive className="mr-1" />
+            Alive
+          </div>
+        );
+      }
+      if (info.getValue() === "unknown") {
+        return (
+          <div className="flex flex-row content-center items-center">
+            <Unknown className="mr-1" />
+            Unknown
+          </div>
+        );
+      }
+    },
   }),
 ];
 export const Table = ({
