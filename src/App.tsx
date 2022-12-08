@@ -8,6 +8,9 @@ import { Select } from "./components/Select";
 const GET_CHARACTERS = gql`
   query getCharacters($page: Int, $filter: FilterCharacter) {
     characters(page: $page, filter: $filter) {
+      info {
+        count
+      }
       results {
         name
         image
@@ -23,9 +26,15 @@ const GET_CHARACTERS = gql`
 `;
 function App() {
   const [filterValue, setFilterValue] = useState<string>(() => "");
+  const [currentPage, setCurrentPage] = useState<number>(() => 1);
   const { data, loading } = useQuery<CharacterResult>(GET_CHARACTERS, {
-    variables: { page: 1, filter: { species: filterValue } },
+    variables: {
+      page: Math.ceil(currentPage / 4),
+      filter: { species: filterValue },
+    },
+    notifyOnNetworkStatusChange: true,
   });
+  let startIndex = (5 * (currentPage - 1)) % 20;
   const [search, setSearch] = useState<string>(() => "");
   return (
     <div className="flex min-h-screen min-w-full bg-blue-0">
@@ -37,10 +46,14 @@ function App() {
         />
         <Select onChange={(e) => setFilterValue(e.currentTarget.value)} />
         <Table
-          data={data?.characters.results.filter((value) =>
-            value.name.includes(search)
-          )}
+          data={data?.characters.results.slice(startIndex, startIndex + 5)}
           loading={loading}
+          totalPages={
+            data?.characters.info.count
+              ? Math.ceil(data.characters.info.count / 5)
+              : 0
+          }
+          setCurrent={setCurrentPage}
         />
       </div>
     </div>
