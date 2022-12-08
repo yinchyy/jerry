@@ -3,10 +3,11 @@ import { Search } from "./components/Search";
 import { Table } from "./components/Table";
 import { useQuery, gql } from "@apollo/client";
 import { CharacterResult } from "./types";
+import { Select } from "./components/Select";
 
 const GET_CHARACTERS = gql`
-  query getCharacters {
-    characters {
+  query getCharacters($page: Int, $filter: FilterCharacter) {
+    characters(page: $page, filter: $filter) {
       results {
         name
         image
@@ -20,9 +21,11 @@ const GET_CHARACTERS = gql`
     }
   }
 `;
-
 function App() {
-  const { data, loading } = useQuery<CharacterResult>(GET_CHARACTERS);
+  const [filterValue, setFilterValue] = useState<string>(() => "");
+  const { data, loading } = useQuery<CharacterResult>(GET_CHARACTERS, {
+    variables: { page: 1, filter: { species: filterValue } },
+  });
   const [search, setSearch] = useState<string>(() => "");
   return (
     <div className="flex min-h-screen min-w-full bg-blue-0">
@@ -32,6 +35,7 @@ function App() {
           value={search}
           onChange={(e) => setSearch(e.currentTarget.value)}
         />
+        <Select onChange={(e) => setFilterValue(e.currentTarget.value)} />
         <Table
           data={data?.characters.results.filter((value) =>
             value.name.includes(search)
