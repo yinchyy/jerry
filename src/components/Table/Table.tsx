@@ -7,6 +7,7 @@ import {
   getPaginationRowModel,
   useReactTable,
 } from "@tanstack/react-table";
+import cx from "classnames";
 import { Character } from "../../types";
 import { Dead, Alive, Unknown } from "./icons";
 
@@ -34,8 +35,15 @@ const columns = [
   }),
   columnHelper.accessor("origin", {
     header: () => "Origin",
-    cell: (info) =>
-      info.getValue().name ? info.getValue().name : info.getValue(),
+    cell: (info) => (
+      <p
+        className={cx({
+          "text-anthracite-25": info.getValue().name === "unknown",
+        })}
+      >
+        {info.getValue().name}
+      </p>
+    ),
   }),
   columnHelper.accessor("gender", {
     header: "Gender",
@@ -45,7 +53,7 @@ const columns = [
     cell: (info) => {
       if (info.getValue() === "Dead") {
         return (
-          <div className="flex flex-row content-center items-center">
+          <div className="flex flex-row content-center items-center text-anthracite-100">
             <Dead className="mr-1" />
             Dead
           </div>
@@ -53,7 +61,7 @@ const columns = [
       }
       if (info.getValue() === "Alive") {
         return (
-          <div className="flex flex-row content-center items-center">
+          <div className="flex flex-row content-center items-center text-anthracite-100">
             <Alive className="mr-1" />
             Alive
           </div>
@@ -61,9 +69,9 @@ const columns = [
       }
       if (info.getValue() === "unknown") {
         return (
-          <div className="flex flex-row content-center items-center">
+          <div className="flex flex-row content-center items-center text-anthracite-70">
             <Unknown className="mr-1" />
-            Unknown
+            unknown
           </div>
         );
       }
@@ -107,7 +115,7 @@ export const Table = ({
   }
   return (
     <div className="p-2">
-      <table>
+      <table className="divide-y divide-blue-30 bg-white drop-shadow-md">
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id} className="text-anthracite-80">
@@ -126,7 +134,13 @@ export const Table = ({
         </thead>
         <tbody>
           {table.getRowModel().rows.map((row) => (
-            <tr key={row.id}>
+            <tr
+              key={row.id}
+              className={cx({
+                "bg-blue-5": row.getValue("status") === "Dead",
+                "text-anthracite-70": row.getValue("status") === "Dead",
+              })}
+            >
               {row.getVisibleCells().map((cell) => (
                 <td key={cell.id}>
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
@@ -135,22 +149,6 @@ export const Table = ({
             </tr>
           ))}
         </tbody>
-        <tfoot>
-          {table.getFooterGroups().map((footerGroup) => (
-            <tr key={footerGroup.id}>
-              {footerGroup.headers.map((header) => (
-                <th key={header.id}>
-                  {header.isPlaceholder
-                    ? null
-                    : flexRender(
-                        header.column.columnDef.footer,
-                        header.getContext()
-                      )}
-                </th>
-              ))}
-            </tr>
-          ))}
-        </tfoot>
       </table>
       <div className="flex items-center gap-2">
         <button
