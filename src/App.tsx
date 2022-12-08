@@ -44,7 +44,10 @@ function App() {
           value={search}
           onChange={(e) => setSearch(e.currentTarget.value)}
         />
-        <Select onChange={(e) => setFilterValue(e.currentTarget.value)} />
+        <Select
+          onChange={(e) => setFilterValue(e.currentTarget.value)}
+          nameFilter={search}
+        />
         <Table
           data={data?.characters.results.slice(startIndex, startIndex + 5)}
           loading={loading}
