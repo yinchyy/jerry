@@ -8,6 +8,10 @@ export interface Character {
 }
 export interface CharacterResult {
   characters: {
+    info: {
+      next: number | null;
+      count: number;
+    };
     results: Character[];
   };
 }
