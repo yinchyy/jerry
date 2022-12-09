@@ -28,6 +28,31 @@ export const Pagination = ({
     "bg-white",
     "p-1 shadow-md",
   ];
+  function getPages(active: number, count: number): string[] {
+    const arr: string[] = [];
+    if (count < 6) {
+      for (let i = 0; i < count; i++) {
+        arr.push(i.toString());
+      }
+      return arr;
+    }
+    for (let i = 0; i < 3; i++) {
+      arr.push(i.toString());
+    }
+    if (active >= 4) {
+      arr.push("...");
+    }
+    if (active >= 3 && active <= count - 4) {
+      arr.push(active.toString());
+    }
+    if (active <= count - 5) {
+      arr.push("...");
+    }
+    for (let i = count - 3; i < count; i++) {
+      arr.push(i.toString());
+    }
+    return arr;
+  }
   return (
     <div className="flex flex-row gap-2">
       <button
@@ -37,23 +62,25 @@ export const Pagination = ({
       >
         <ArrowLeft />
       </button>
-      <button
-        className={cx(buttonStyles, {
-          "bg-blue-10": table.getState().pagination.pageIndex === 0,
-        })}
-        onClick={() => table.setPageIndex(0)}
-      >
-        1
-      </button>
-      <button
-        className={cx(buttonStyles, {
-          "bg-blue-10":
-            table.getState().pagination.pageIndex === table.getPageCount() - 1,
-        })}
-        onClick={() => table.setPageIndex(table.getPageCount() - 1)}
-      >
-        {table.getPageCount()}
-      </button>
+      {getPages(
+        table.getState().pagination.pageIndex,
+        table.getPageCount()
+      ).map((value) => {
+        if (value === "...") {
+          return "...";
+        }
+        return (
+          <button
+            className={cx(buttonStyles, {
+              "bg-blue-10":
+                table.getState().pagination.pageIndex === parseInt(value),
+            })}
+            onClick={() => table.setPageIndex(parseInt(value))}
+          >
+            {parseInt(value) + 1}
+          </button>
+        );
+      })}
       <button
         className={cx(buttonStyles)}
         onClick={() => table.nextPage()}
