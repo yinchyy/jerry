@@ -109,6 +109,14 @@ export const Table = ({
     table.setPageSize(5);
   }, []);
   useEffect(() => {
+    if (
+      table.getState().pagination.pageIndex >= table.getPageCount() &&
+      !loading
+    ) {
+      table.setPageIndex(0);
+    }
+  }, [data]);
+  useEffect(() => {
     setCurrent(() => table.getState().pagination.pageIndex + 1);
   }, [table.getState().pagination.pageIndex]);
   if (loading) {
