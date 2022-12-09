@@ -87,7 +87,7 @@ export const Select = ({ nameFilter, ...props }: SelectProps) => {
         {...props}
       >
         <option disabled value={-1} hidden>
-          Select
+          Species
         </option>
         {loading ? <option disabled>Loading...</option> : null}
         {data!.map((value, index) => (
