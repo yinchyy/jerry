@@ -15,6 +15,22 @@ import { Pagination } from "./Pagination";
 const columnHelper = createColumnHelper<any>();
 
 const columns = [
+  columnHelper.accessor("name", {
+    header: () => (
+      <input
+        type="checkbox"
+        className="appearance-none rounded-[2px] border border-blue-40 p-2 checked:bg-anthracite-70"
+      />
+    ),
+    cell: (info) => (
+      <>
+        <input
+          type="checkbox"
+          className="appearance-none rounded-[2px] border border-blue-40 p-2 checked:bg-anthracite-70"
+        />
+      </>
+    ),
+  }),
   columnHelper.accessor("combined", {
     header: () => "Name",
     cell: (info) => (
@@ -128,8 +144,15 @@ export const Table = ({
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id} className="text-anthracite-80">
-              {headerGroup.headers.map((header) => (
-                <th key={header.id} className="py-2 text-start">
+              {headerGroup.headers.map((header, index) => (
+                <th
+                  key={header.id}
+                  className={cx({
+                    "py-2 text-start": index !== 0,
+                    "flex flex-row items-center justify-center py-3":
+                      index === 0,
+                  })}
+                >
                   {header.isPlaceholder
                     ? null
                     : flexRender(
@@ -150,8 +173,13 @@ export const Table = ({
                 "text-anthracite-70": row.getValue("status") === "Dead",
               })}
             >
-              {row.getVisibleCells().map((cell) => (
-                <td key={cell.id} className="py-3">
+              {row.getVisibleCells().map((cell, index) => (
+                <td
+                  key={cell.id}
+                  className={cx("py-3", {
+                    "flex flex-row justify-center pt-4": index === 0,
+                  })}
+                >
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </td>
               ))}
