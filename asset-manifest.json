@@ -1,0 +1,21 @@
+{
+  "files": {
+    "main.css": "/jerry/static/css/main.3b1a1eca.css",
+    "main.js": "/jerry/static/js/main.82968e3a.js",
+    "static/js/787.1913c2e7.chunk.js": "/jerry/static/js/787.1913c2e7.chunk.js",
+    "static/media/unknown.svg": "/jerry/static/media/unknown.9065d6ac581b41f9bb40cca5b7c816ff.svg",
+    "static/media/dead.svg": "/jerry/static/media/dead.bccffa416eddb1795c7fbd06d3fb7097.svg",
+    "static/media/alive.svg": "/jerry/static/media/alive.b4bbcb2eea049fdc9f3123643bdf5597.svg",
+    "static/media/search.svg": "/jerry/static/media/search.31b187df0038c9786941512ff6923a3f.svg",
+    "index.html": "/jerry/index.html",
+    "static/media/arrowRight.svg": "/jerry/static/media/arrowRight.2cd8146905d6fb172be9366295aa3cd1.svg",
+    "static/media/arrowLeft.svg": "/jerry/static/media/arrowLeft.e7518c0334e8cec4d9857aca85db0631.svg",
+    "main.3b1a1eca.css.map": "/jerry/static/css/main.3b1a1eca.css.map",
+    "main.82968e3a.js.map": "/jerry/static/js/main.82968e3a.js.map",
+    "787.1913c2e7.chunk.js.map": "/jerry/static/js/787.1913c2e7.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.3b1a1eca.css",
+    "static/js/main.82968e3a.js"
+  ]
+}
