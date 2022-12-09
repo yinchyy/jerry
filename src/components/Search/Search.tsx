@@ -17,6 +17,7 @@ export const Search = ({ ...props }: SearchProps) => {
         "justify-between",
         "items-center",
         "md:max-w-[150px]",
+        "w-full",
         "px-2",
         "py-2"
       )}

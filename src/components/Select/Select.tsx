@@ -63,6 +63,7 @@ export const Select = ({ nameFilter, ...props }: SelectProps) => {
         "justify-between",
         "items-center",
         "md:max-w-[150px]",
+        "w-full",
         "px-2",
         "py-2"
       )}

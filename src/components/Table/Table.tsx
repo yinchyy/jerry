@@ -123,13 +123,13 @@ export const Table = ({
     return <div>data loading...</div>;
   }
   return (
-    <div className="p-2">
-      <table className="divide-y divide-blue-30 rounded-default bg-white drop-shadow-md">
+    <>
+      <table className="min-w-full divide-y divide-blue-30 rounded-default bg-white drop-shadow-md">
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id} className="text-anthracite-80">
               {headerGroup.headers.map((header) => (
-                <th key={header.id}>
+                <th key={header.id} className="py-2 text-start">
                   {header.isPlaceholder
                     ? null
                     : flexRender(
@@ -151,7 +151,7 @@ export const Table = ({
               })}
             >
               {row.getVisibleCells().map((cell) => (
-                <td key={cell.id}>
+                <td key={cell.id} className="py-3">
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </td>
               ))}
@@ -160,6 +160,6 @@ export const Table = ({
         </tbody>
       </table>
       <Pagination table={table} />
-    </div>
+    </>
   );
 };
